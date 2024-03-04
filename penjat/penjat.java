@@ -20,15 +20,6 @@ public class penjat {
                             "pissarra","professor","quadrat","taronja",
                             "tramvia","trapezi","tricicle","violeta"};
 
-        String[][] taulellFinal =
-                            {{" "," ","_","_","_","_","_"," "},
-                            {" "," ","|"," "," "," O"," "," "},
-                            {" "," ","|"," "," /","|","\\"," "},
-                            {" "," ","|"," "," /"," ","\\"," "},
-                            {" "," ","|"," "," "," "," "," "},
-                            {" ","_","|","_","_"," "," "," "},
-                            {"/"," "," "," "," ","\\"," "," "}};
-
         String[][] taulell =
                             {{" "," ","_","_","_","_","_"," "},
                             {" "," ","|"," "," "," "," "," "},
@@ -38,22 +29,31 @@ public class penjat {
                             {" ","_","|","_","_"," "," "," "},
                             {"/"," "," "," "," ","\\"," "," "}};
 
-        int[] errors = {0};
+        int[] errors = {0}; // aquest es el comptador de errades que serveix per construir el penjat
+        int[] contador = {0}; // aquest es el contador d'encerts per saber quan completem la paraula
+        int[] lletresRepetides = {0};// intent de proposit de no poder introduir mes de 27 paraules
         mostrarTaulell(taulell);
-        String paraula = generarParaula(paraules);
-        char[] paraulaSeparada = new char[paraula.length()];
-        int[] contador = {0};
-        codificarParaula(paraulaSeparada,paraula);
+        String paraula = generarParaula(paraules); //genero una paraula aleatoria de la llista de possibilitats
+        char[] paraulaSeparada = new char[paraula.length()]; // la descomposo en chars
+        codificarParaula(paraulaSeparada,paraula); // aquest metode assigna les incognites de la paraula amb *
+        String[] abecedari = new String[27]; //intent d'assignar una llista de lletres que ja hem introduit de manera ordenada
+        //String[] abecedari = {"h","a","x","b","z","u"};
 
-        while (contador[0] < paraula.length() && errors[0] < 6){
+        while (contador[0] < paraula.length() && errors[0] < 6){ //el bucle seguira fins que superis el limit d'encerts o d'errors
             mostrarParaula(paraulaSeparada);
             String input = sc.nextLine();
+            comprovarInput(input, abecedari, lletresRepetides);
             netejaPantalla();
 
             mostrarTaulell(taulell);
             int resposta = comprovarLletra(input, paraulaSeparada, paraula, contador);
             if (resposta == 0){
                 System.out.println("S'ha trobat la lletra " + input.charAt(0));
+                //mostrarAbecedari(abecedari);
+                if (contador[0] == paraula.length()){
+                    System.out.println("Has guanyat el joc!! la paraula era: ");
+                    System.out.println(paraula);
+                }
             }
             else {
                 errors[0]++;
@@ -61,6 +61,32 @@ public class penjat {
                 netejaPantalla();
                 mostrarTaulell(taulell);
                 System.out.println("No s'ha trobat la lletra " + input.charAt(0));
+                if (errors[0] == 6){
+                    System.out.println("Has perdut!! la paraula era: ");
+                    System.out.println(paraula);
+                }
+            }
+        }
+    }
+
+    static void mostrarAbecedari(String[] abecedari){
+        for (String lletra: abecedari){
+            System.out.print(lletra);
+        }
+    }
+
+    static void comprovarInput(String input, String[] abecedari, int[] lletresRepetides){
+
+        for (int i = 1; i < lletresRepetides[0]+1; i++)
+        {
+            for(int j = 0; j < lletresRepetides[0]; j++)
+            {
+                if (abecedari[j].compareToIgnoreCase(abecedari [j+1]) >0)
+                {
+                    String aux = abecedari[j];
+                    abecedari[j] = abecedari[j+1];
+                    abecedari[j+1] = aux;
+                }
             }
         }
     }
