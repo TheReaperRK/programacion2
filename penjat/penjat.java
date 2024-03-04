@@ -29,6 +29,8 @@ public class penjat {
                             {" ","_","|","_","_"," "," "," "},
                             {"/"," "," "," "," ","\\"," "," "}};
 
+        //prueba
+
         int[] errors = {0}; // aquest es el comptador de errades que serveix per construir el penjat
         int[] contador = {0}; // aquest es el contador d'encerts per saber quan completem la paraula
         int[] lletresRepetides = {0};// intent de proposit de no poder introduir mes de 27 paraules
