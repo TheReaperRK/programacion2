@@ -17,10 +17,24 @@ public class penjat {
                             "pissarra","professor","quadrat","taronja",
                             "tramvia","trapezi","tricicle","violeta"};
 
-        
+        String[][] taulell = {{" "," ","_","_","_","_","_"," "},
+                            {" "," ","|"," "," "," O"," "," "},
+                            {" "," ","|"," "," /","|","\\"," "},
+                            {" "," ","|"," "," /"," ","\\"," "},
+                            {" "," ","|"," "," "," "," "," "},
+                            {" ","_","|","_","_"," "," "," "},
+                            {"/"," "," "," "," ","\\"," "," "}};
+        mostrarTaulell(taulell);
     }
     
-    
+    static void mostrarTaulell(String[][] taulell){
+        for (String[] filas : taulell){
+            for (String valor : filas){
+                System.out.print(valor);
+            }
+            System.out.println();
+        }
+    }
     
     static void netejaPantalla() {
 
