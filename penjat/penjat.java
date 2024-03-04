@@ -38,20 +38,53 @@ public class penjat {
                             {" ","_","|","_","_"," "," "," "},
                             {"/"," "," "," "," ","\\"," "," "}};
 
+        int[] errors = {0};
         mostrarTaulell(taulell);
         String paraula = generarParaula(paraules);
         char[] paraulaSeparada = new char[paraula.length()];
-
+        int[] contador = {0};
         codificarParaula(paraulaSeparada,paraula);
 
-        while (true){
+        while (contador[0] < paraula.length() && errors[0] < 6){
+            mostrarParaula(paraulaSeparada);
             String input = sc.nextLine();
+            netejaPantalla();
 
-            int resposta = comprovarLletra(input, paraulaSeparada, paraula);
+            mostrarTaulell(taulell);
+            int resposta = comprovarLletra(input, paraulaSeparada, paraula, contador);
             if (resposta == 0){
                 System.out.println("S'ha trobat la lletra " + input.charAt(0));
-                mostrarParaula(paraulaSeparada);
             }
+            else {
+                errors[0]++;
+                actualitzarPenjat(taulell, errors);
+                netejaPantalla();
+                mostrarTaulell(taulell);
+                System.out.println("No s'ha trobat la lletra " + input.charAt(0));
+            }
+        }
+    }
+
+    static void actualitzarPenjat(String[][] taulell, int[] errors){
+        switch (errors[0]) {
+            case 1:
+                taulell[1][6] = "O";
+                break;
+            case 2:
+                taulell[2][6] = "|";
+                break;
+            case 3:
+                taulell[2][5] = "/";
+                break;
+            case 4:
+                taulell[2][7] = "\\";
+                break;
+            case 5:
+                taulell[3][5] = "/";
+                break;
+            case 6:
+                taulell[3][7] = "\\";
+                break;
         }
     }
 
@@ -66,12 +99,13 @@ public class penjat {
         return paraules[random];
     }
 
-    static int comprovarLletra(String input, char[] paraulaSeparada, String paraula){
+    static int comprovarLletra(String input, char[] paraulaSeparada, String paraula, int[] contador){
         boolean trobada = false;
         for (int  i = 0; i < paraula.length(); i++){
             if (input.charAt(0) == paraula.charAt(i)){
                 paraulaSeparada[i] = input.charAt(0);
                 trobada = true;
+                contador[0]++;
             }
         }
         if (trobada)
@@ -93,7 +127,6 @@ public class penjat {
         System.out.println(paraula);
         for (int i = 0; i < paraula.length(); i++){
             paraulaSeparada[i] = '*';
-            System.out.print(paraulaSeparada[i] + " ");
         }
     }
     
