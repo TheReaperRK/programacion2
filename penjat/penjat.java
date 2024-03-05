@@ -71,21 +71,6 @@ public class penjat {
         }
     }
 
-    static void mostrarAbecedari(String[] abecedari){
-        for (String lletra: abecedari){
-            System.out.print(lletra);
-        }
-    }
-
-    static String[] comprovarInput(String input, String abecedari, int[] lletresUtilitzades){
-        String[] lletresRepetides = new String[abecedari.length()+1];
-        if (abecedari.length() == 0 && input.length() < 2)
-            lletresRepetides[0] = input;
-        else{
-            for (int i = 0; i < abecedari.length())
-            }
-        return lletresRepetides;
-    }
 
     static void actualitzarPenjat(String[][] taulell, int[] errors){
         switch (errors[0]) {
