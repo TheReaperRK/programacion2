@@ -29,7 +29,7 @@ public class penjat {
                             {" ","_","|","_","_"," "," "," "},
                             {"/"," "," "," "," ","\\"," "," "}};
 
-        //prueba
+
 
         int[] errors = {0}; // aquest es el comptador de errades que serveix per construir el penjat
         int[] contador = {0}; // aquest es el contador d'encerts per saber quan completem la paraula
@@ -38,13 +38,13 @@ public class penjat {
         String paraula = generarParaula(paraules); //genero una paraula aleatoria de la llista de possibilitats
         char[] paraulaSeparada = new char[paraula.length()]; // la descomposo en chars
         codificarParaula(paraulaSeparada,paraula); // aquest metode assigna les incognites de la paraula amb *
-        String[] abecedari = new String[27]; //intent d'assignar una llista de lletres que ja hem introduit de manera ordenada
+        String abecedari = ""; //intent d'assignar una llista de lletres que ja hem introduit de manera ordenada
         //String[] abecedari = {"h","a","x","b","z","u"};
 
         while (contador[0] < paraula.length() && errors[0] < 6){ //el bucle seguira fins que superis el limit d'encerts o d'errors
             mostrarParaula(paraulaSeparada);
             String input = sc.nextLine();
-            comprovarInput(input, abecedari, lletresRepetides);
+            String[] lletresUtilitzades = comprovarInput(input, abecedari, lletresRepetides);
             netejaPantalla();
 
             mostrarTaulell(taulell);
@@ -77,20 +77,14 @@ public class penjat {
         }
     }
 
-    static void comprovarInput(String input, String[] abecedari, int[] lletresRepetides){
-
-        for (int i = 1; i < lletresRepetides[0]+1; i++)
-        {
-            for(int j = 0; j < lletresRepetides[0]; j++)
-            {
-                if (abecedari[j].compareToIgnoreCase(abecedari [j+1]) >0)
-                {
-                    String aux = abecedari[j];
-                    abecedari[j] = abecedari[j+1];
-                    abecedari[j+1] = aux;
-                }
+    static String[] comprovarInput(String input, String abecedari, int[] lletresUtilitzades){
+        String[] lletresRepetides = new String[abecedari.length()+1];
+        if (abecedari.length() == 0 && input.length() < 2)
+            lletresRepetides[0] = input;
+        else{
+            for (int i = 0; i < abecedari.length())
             }
-        }
+        return lletresRepetides;
     }
 
     static void actualitzarPenjat(String[][] taulell, int[] errors){
