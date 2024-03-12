@@ -8,6 +8,7 @@ public class penjat {
     static Scanner sc = new Scanner(System.in);
     static int errors = 0;
     static int contador = 0;
+    static String lletres = "";
 
     public static void main(String[] args) {
 
@@ -32,17 +33,22 @@ public class penjat {
                             {" ","_","|","_","_","_","_"," "},
                             {"/"," "," "," "," "," "," ","\\"}};
 
+        String[][] taulellPartida =
+                            {{" "," ","_","_","_","_","_"," "},
+                            {" "," ","|"," "," "," "," "," "},
+                            {" "," ","|"," "," "," "," "," "},
+                            {" "," ","|"," "," "," "," "," "},
+                            {" "," ","|"," "," "," "," "," "},
+                            {" "," ","|"," "," "," "," "," "},
+                            {" ","_","|","_","_","_","_"," "},
+                            {"/"," "," "," "," "," "," ","\\"}};
 
-
-        // aquest es el comptador de errades que serveix per construir el penjat
-        // aquest es el contador d'encerts per saber quan completem la paraula
-        // int[] lletresRepetides = {0};// intent de proposit de no poder introduir mes de 27 paraules
+        taulellPartida = taulell; // per tal de reiniciar el taulell cada partida
         mostrarTaulell(taulell);
         String paraula = generarParaula(paraules); //genero una paraula aleatoria de la llista de possibilitats
         char[] paraulaSeparada = new char[paraula.length()]; // la descomposo en chars
         codificarParaula(paraulaSeparada,paraula); // aquest metode assigna les incognites de la paraula amb *
-        String abecedari = ""; //intent d'assignar una llista de lletres que ja hem introduit de manera ordenada
-        //String[] abecedari = {"h","a","x","b","z","u"};
+        lletres = "";
 
         while (contador < paraula.length() && errors < 8){ //el bucle seguira fins que superis el limit d'encerts o d'errors
             mostrarParaula(paraulaSeparada);
@@ -60,7 +66,7 @@ public class penjat {
                     System.out.println(paraula);
                 }
             }
-            else {
+            else if (resposta == -1){
                 errors++;
                 actualitzarPenjat(taulell, errors);
                 netejaPantalla();
@@ -70,6 +76,8 @@ public class penjat {
                     System.out.println("Has perdut!! la paraula era: ");
                     System.out.println(paraula);
                 }
+            } else {
+                
             }
         }
     }
@@ -116,18 +124,38 @@ public class penjat {
     }
 
     static int comprovarLletra(String input, char[] paraulaSeparada, String paraula){
-        boolean trobada = false;
-        for (int  i = 0; i < paraula.length(); i++){
-            if (input.charAt(0) == paraula.charAt(i)){
-                paraulaSeparada[i] = input.charAt(0);
-                trobada = true;
-                contador++;
-            }
+        boolean repetida = false;
+        if (lletres.length()==0){
+            lletres += input;
+            System.out.println(lletres);
         }
-        if (trobada)
-            return 0;
-        else
-            return-1;
+        else{
+            for (int i = 0; i < lletres.length();i++){
+                if (input.charAt(0) == lletres.charAt(i)) {
+                    repetida = true;
+                }
+            }
+            if (!repetida)
+                lletres += input;
+                System.out.println(lletres);
+        }
+
+        if (!repetida){
+            boolean trobada = false;
+            for (int  i = 0; i < paraula.length(); i++){
+                if (input.charAt(0) == paraula.charAt(i)){
+                    paraulaSeparada[i] = input.charAt(0);
+                    trobada = true;
+                    contador++;
+                }
+            }
+            if (trobada)
+                return 0;
+            else
+                return-1;
+        } else {
+            return 1;
+        }
     }
     
     static void mostrarTaulell(String[][] taulell){
