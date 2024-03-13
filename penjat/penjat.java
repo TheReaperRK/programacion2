@@ -1,6 +1,7 @@
 package penjat;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class penjat {
@@ -48,11 +49,12 @@ public class penjat {
         String paraula = generarParaula(paraules); //genero una paraula aleatoria de la llista de possibilitats
         char[] paraulaSeparada = new char[paraula.length()]; // la descomposo en chars
         codificarParaula(paraulaSeparada,paraula); // aquest metode assigna les incognites de la paraula amb *
-        lletres = "";
+        lletres = ""; //per inicialitzar a 0 la llista per defecte cada partida
 
         while (contador < paraula.length() && errors < 8){ //el bucle seguira fins que superis el limit d'encerts o d'errors
             mostrarParaula(paraulaSeparada);
-            String input = sc.nextLine();
+            String entrada = sc.nextLine();
+            String input = entrada.toLowerCase();
            // String[] lletresUtilitzades = comprovarInput(input, abecedari, lletresRepetides);
             netejaPantalla();
 
@@ -60,7 +62,6 @@ public class penjat {
             int resposta = comprovarLletra(input, paraulaSeparada, paraula);
             if (resposta == 0){
                 System.out.println("S'ha trobat la lletra " + input.charAt(0));
-                //mostrarAbecedari(abecedari);
                 if (contador == paraula.length()){
                     System.out.println("Has guanyat el joc!! la paraula era: ");
                     System.out.println(paraula);
@@ -69,15 +70,14 @@ public class penjat {
             else if (resposta == -1){
                 errors++;
                 actualitzarPenjat(taulell, errors);
-                netejaPantalla();
+                netejaPantalla();   //Segueixo el sistema, actualitza, neteja, mostra
                 mostrarTaulell(taulell);
+                System.out.println(lletres);  //mostro la llista ordenada
                 System.out.println("No s'ha trobat la lletra " + input.charAt(0));
-                if (errors == 6){
+                if (errors == 8){
                     System.out.println("Has perdut!! la paraula era: ");
                     System.out.println(paraula);
                 }
-            } else {
-                
             }
         }
     }
@@ -113,13 +113,13 @@ public class penjat {
     }
 
     static void mostrarParaula(char[] paraulaSeparada){
-        for (char lletra : paraulaSeparada){
+        for (char lletra : paraulaSeparada){    //mostra la paraula codificada
             System.out.print(lletra + " ");
         }
     }
 
     static String generarParaula(String[] paraules){
-        int random = (int)(Math.random()*((paraules.length+1)));
+        int random = (int)(Math.random()*((paraules.length+1)));    //random per generar paraula
         return paraules[random];
     }
 
@@ -127,18 +127,29 @@ public class penjat {
         boolean repetida = false;
         if (lletres.length()==0){
             lletres += input;
-            System.out.println(lletres);
         }
-        else{
-            for (int i = 0; i < lletres.length();i++){
-                if (input.charAt(0) == lletres.charAt(i)) {
+        else
+        {
+            char[] frase = lletres.toCharArray();
+            int feedback = cercaBinaria(frase, input.charAt(0));
+            switch (feedback) {
+                case 1:
                     repetida = true;
-                }
+                    System.out.println("Aquesta lletra ja l'has dit!!");
+                    //System.out.println(lletres);
+                    break;
+                case -1:
+                    lletres += input;
+                    frase = lletres.toCharArray();
+                    Arrays.sort(frase);
+                    lletres="";
+                    for (char lletra : frase){
+                        lletres += lletra;
+                    }
+                    break;
             }
-            if (!repetida)
-                lletres += input;
-                System.out.println(lletres);
         }
+        System.out.println(lletres);
 
         if (!repetida){
             boolean trobada = false;
@@ -157,6 +168,23 @@ public class penjat {
             return 1;
         }
     }
+
+    static int cercaBinaria(char[] lletres, char valor){
+        int esquerra = 0, dreta = lletres.length-1;
+        while (esquerra <= dreta) {
+            int index = (esquerra+dreta)/2;
+            
+            if (lletres[index] == valor) {
+                return 1; //lletra repetida
+            } else if (lletres[index] < valor) {
+                esquerra = index + 1;
+            }
+            else {  // lletres[index] > valor
+                dreta = index - 1;
+            }
+        }
+        return -1; //lletra nova
+    }
     
     static void mostrarTaulell(String[][] taulell){
         for (String[] filas : taulell){
@@ -168,7 +196,6 @@ public class penjat {
     }
 
     static void codificarParaula(char[] paraulaSeparada, String paraula){
-        System.out.println(paraula);
         for (int i = 0; i < paraula.length(); i++){
             paraulaSeparada[i] = '*';
         }
@@ -187,5 +214,4 @@ public class penjat {
             System.out.println();
         }
     }
-                            
 }
