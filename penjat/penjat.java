@@ -24,7 +24,7 @@ public class penjat {
                             "pissarra","professor","quadrat","taronja",
                             "tramvia","trapezi","tricicle","violeta"};
 
-        String[][] taulell =
+        final String[][] taulell =
                             {{" "," ","_","_","_","_","_"," "},
                             {" "," ","|"," "," "," "," "," "},
                             {" "," ","|"," "," "," "," "," "},
@@ -44,70 +44,103 @@ public class penjat {
                             {" ","_","|","_","_","_","_"," "},
                             {"/"," "," "," "," "," "," ","\\"}};
 
-        taulellPartida = taulell; // per tal de reiniciar el taulell cada partida
-        mostrarTaulell(taulell);
-        String paraula = generarParaula(paraules); //genero una paraula aleatoria de la llista de possibilitats
-        char[] paraulaSeparada = new char[paraula.length()]; // la descomposo en chars
-        codificarParaula(paraulaSeparada,paraula); // aquest metode assigna les incognites de la paraula amb *
-        lletres = ""; //per inicialitzar a 0 la llista per defecte cada partida
+        boolean continuar = true;
 
-        while (contador < paraula.length() && errors < 8){ //el bucle seguira fins que superis el limit d'encerts o d'errors
-            mostrarParaula(paraulaSeparada);
-            String entrada = sc.nextLine();
-            String input = entrada.toLowerCase();
-           // String[] lletresUtilitzades = comprovarInput(input, abecedari, lletresRepetides);
+        while (continuar) {
             netejaPantalla();
+            reiniciarTaulell(taulell, taulellPartida);
+            mostrarTaulell(taulellPartida);
+            String paraula = generarParaula(paraules); //genero una paraula aleatoria de la llista de possibilitats
+            char[] paraulaSeparada = new char[paraula.length()]; // la descomposo en chars
+            codificarParaula(paraulaSeparada,paraula); // aquest metode assigna les incognites de la paraula amb *
+            lletres = ""; //per inicialitzar a 0 la llista per defecte cada partida
+            errors= 0;
+            contador=0;
+        
+                while (contador < paraula.length() && errors < 8){ //el bucle seguira fins que superis el limit d'encerts o d'errors
+                mostrarParaula(paraulaSeparada);
+                String entrada = sc.nextLine();
+                String input = entrada.toLowerCase();
+                // String[] lletresUtilitzades = comprovarInput(input, abecedari, lletresRepetides);
+                netejaPantalla();
 
-            mostrarTaulell(taulell);
-            int resposta = comprovarLletra(input, paraulaSeparada, paraula);
-            if (resposta == 0){
-                System.out.println("S'ha trobat la lletra " + input.charAt(0));
-                if (contador == paraula.length()){
-                    System.out.println("Has guanyat el joc!! la paraula era: ");
-                    System.out.println(paraula);
+                mostrarTaulell(taulellPartida);
+                int resposta = comprovarLletra(input, paraulaSeparada, paraula);
+                if (resposta == 0){
+                    System.out.println("S'ha trobat la lletra " + input.charAt(0));
+                    if (contador == paraula.length()){
+                        System.out.println("Has guanyat el joc!! la paraula era: ");
+                        System.out.println(paraula);
+                    }
+                }
+                else if (resposta == -1){
+                    errors++;
+                    actualitzarPenjat(taulellPartida, errors);
+                    netejaPantalla();   //Segueixo el sistema, actualitza, neteja, mostra
+                    mostrarTaulell(taulellPartida);
+                    System.out.println(lletres);  //mostro la llista ordenada
+                    System.out.println("No s'ha trobat la lletra " + input.charAt(0));
+                    if (errors == 8){
+                        System.out.println("Has perdut!! la paraula era: ");
+                        System.out.println(paraula);
+                    }
+                } else {
+                    System.out.println("Aquesta lletra ja l'has dit!!");
                 }
             }
-            else if (resposta == -1){
-                errors++;
-                actualitzarPenjat(taulell, errors);
-                netejaPantalla();   //Segueixo el sistema, actualitza, neteja, mostra
-                mostrarTaulell(taulell);
-                System.out.println(lletres);  //mostro la llista ordenada
-                System.out.println("No s'ha trobat la lletra " + input.charAt(0));
-                if (errors == 8){
-                    System.out.println("Has perdut!! la paraula era: ");
-                    System.out.println(paraula);
-                }
+            continuarJugant(continuar); //metode per preguntra si vols seguir jugant
+        }
+    }
+
+    static void reiniciarTaulell(String[][] taulell, String[][] taulellPartida){
+        for(int i = 0; i < taulell[0].length; i++){
+            for (int y = 0; y < taulell.length; y++){
+                taulellPartida[y][i] = taulell[y][i];
             }
         }
     }
 
+    static void continuarJugant(boolean continuar){
+        System.out.println("Vols jugar un altre partida? [S-N]");
+            String resposta = sc.nextLine();
+            switch (resposta) {
+                case "S":
+                    netejaPantalla();
+                    break;
+                case "N":
+                    continuar=false;
+                    break;
+                default:
+                    continuar=false;
+                    break;
+            }
+    }
 
-    static void actualitzarPenjat(String[][] taulell, int errors){
+    static void actualitzarPenjat(String[][] taulellPartida, int errors){
         switch (errors) {
             case 1:
-                taulell[1][6] = "|";
+                taulellPartida[1][6] = "|";
                 break;
             case 2:
-                taulell[2][6] = "O";
+                taulellPartida[2][6] = "O";
                 break;
             case 3:
-                taulell[3][6] = "|";
+                taulellPartida[3][6] = "|";
                 break;
             case 4:
-                taulell[3][5] = "/";
+                taulellPartida[3][5] = "/";
                 break;
             case 5:
-                taulell[3][7] = "\\";
+                taulellPartida[3][7] = "\\";
                 break;
             case 6:
-                taulell[4][6] = "|";
+                taulellPartida[4][6] = "|";
                 break;
             case 7:
-                taulell[5][5] = "/";
+                taulellPartida[5][5] = "/";
                 break;
             case 8:
-                taulell[5][7] = "\\";
+                taulellPartida[5][7] = "\\";
                 break;
         }
     }
@@ -125,7 +158,7 @@ public class penjat {
 
     static int comprovarLletra(String input, char[] paraulaSeparada, String paraula){
         boolean repetida = false;
-        if (lletres.length()==0){
+        if (lletres.length()==0){ //la primera lletra introduïda sempre entrara a la llista
             lletres += input;
         }
         else
@@ -135,27 +168,25 @@ public class penjat {
             switch (feedback) {
                 case 1:
                     repetida = true;
-                    System.out.println("Aquesta lletra ja l'has dit!!");
-                    //System.out.println(lletres);
                     break;
                 case -1:
                     lletres += input;
-                    frase = lletres.toCharArray();
+                    frase = lletres.toCharArray(); //utilitzo el metode de ficar la lletra, pasar-la a array de chars i ordenar-la
                     Arrays.sort(frase);
-                    lletres="";
+                    lletres=""; //una vegada guardada a l'array auxiliar reinicio la llista per sobreescriure-la
                     for (char lletra : frase){
                         lletres += lletra;
                     }
                     break;
             }
         }
-        System.out.println(lletres);
+        System.out.println(lletres);    //printo la llista
 
         if (!repetida){
             boolean trobada = false;
             for (int  i = 0; i < paraula.length(); i++){
                 if (input.charAt(0) == paraula.charAt(i)){
-                    paraulaSeparada[i] = input.charAt(0);
+                    paraulaSeparada[i] = input.charAt(0);   //buscar l'input a la paraula
                     trobada = true;
                     contador++;
                 }
@@ -186,9 +217,9 @@ public class penjat {
         return -1; //lletra nova
     }
     
-    static void mostrarTaulell(String[][] taulell){
-        for (String[] filas : taulell){
-            for (String valor : filas){
+    static void mostrarTaulell(String[][] taulellPartida){
+        for (String[] filas : taulellPartida){
+            for (String valor : filas){     //mostra el taulell
                 System.out.print(valor);
             }
             System.out.println();
@@ -196,7 +227,7 @@ public class penjat {
     }
 
     static void codificarParaula(char[] paraulaSeparada, String paraula){
-        for (int i = 0; i < paraula.length(); i++){
+        for (int i = 0; i < paraula.length(); i++){ //transforma la paraula en * i la printa
             paraulaSeparada[i] = '*';
         }
     }
