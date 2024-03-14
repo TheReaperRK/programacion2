@@ -56,20 +56,23 @@ public class penjat {
             errors= 0;
             contador=0;
         
+            mostrarParaula(paraulaSeparada);
+            System.out.print("\n\nLletres: ");
                 while (contador < paraula.length() && errors < 8){ //el bucle seguira fins que superis el limit d'encerts o d'errors
-                mostrarParaula(paraulaSeparada);
+                System.out.print("\n\nIntrodueix lletra: ");
                 String entrada = sc.nextLine();
                 String input = entrada.toLowerCase();
                 // String[] lletresUtilitzades = comprovarInput(input, abecedari, lletresRepetides);
                 netejaPantalla();
 
                 mostrarTaulell(taulellPartida);
+                
                 int resposta = comprovarLletra(input, paraulaSeparada, paraula);
                 if (resposta == 0){
-                    System.out.println("S'ha trobat la lletra " + input.charAt(0));
+                    //System.out.println("S'ha trobat la lletra " + input.charAt(0));
                     if (contador == paraula.length()){
-                        System.out.println("Has guanyat el joc!! la paraula era: ");
-                        System.out.println(paraula);
+                        System.out.print("\n\nHas guanyat el joc!! la paraula era: ");
+                        System.out.println(paraula + "\n");
                     }
                 }
                 else if (resposta == -1){
@@ -77,14 +80,13 @@ public class penjat {
                     actualitzarPenjat(taulellPartida, errors);
                     netejaPantalla();   //Segueixo el sistema, actualitza, neteja, mostra
                     mostrarTaulell(taulellPartida);
-                    System.out.println(lletres);  //mostro la llista ordenada
-                    System.out.println("No s'ha trobat la lletra " + input.charAt(0));
+                    mostrarParaula(paraulaSeparada);
+                    System.out.print("\n\nLletres: " + lletres);  //mostro la llista ordenada
+                    //System.out.println("No s'ha trobat la lletra " + input.charAt(0));
                     if (errors == 8){
-                        System.out.println("Has perdut!! la paraula era: ");
-                        System.out.println(paraula);
+                        System.out.print("\n\nHas perdut!! la paraula era: ");
+                        System.out.println(paraula + "\n");
                     }
-                } else {
-                    System.out.println("Aquesta lletra ja l'has dit!!");
                 }
             }
             continuarJugant(); //metode per preguntra si vols seguir jugant
@@ -145,6 +147,7 @@ public class penjat {
     }
 
     static void mostrarParaula(char[] paraulaSeparada){
+        System.out.print("paraula: ");
         for (char lletra : paraulaSeparada){    //mostra la paraula codificada
             System.out.print(lletra + " ");
         }
@@ -179,7 +182,8 @@ public class penjat {
                     break;
             }
         }
-        System.out.println(lletres);    //printo la llista
+        mostrarParaula(paraulaSeparada);
+        System.out.print("\n\nLletres: " + lletres);    //printo la llista
 
         if (!repetida){
             boolean trobada = false;
