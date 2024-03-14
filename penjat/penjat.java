@@ -10,6 +10,7 @@ public class penjat {
     static int errors = 0;
     static int contador = 0;
     static String lletres = "";
+    static boolean continuar = true;
 
     public static void main(String[] args) {
 
@@ -43,8 +44,6 @@ public class penjat {
                             {" "," ","|"," "," "," "," "," "},
                             {" ","_","|","_","_","_","_"," "},
                             {"/"," "," "," "," "," "," ","\\"}};
-
-        boolean continuar = true;
 
         while (continuar) {
             netejaPantalla();
@@ -88,7 +87,7 @@ public class penjat {
                     System.out.println("Aquesta lletra ja l'has dit!!");
                 }
             }
-            continuarJugant(continuar); //metode per preguntra si vols seguir jugant
+            continuarJugant(); //metode per preguntra si vols seguir jugant
         }
     }
 
@@ -100,10 +99,10 @@ public class penjat {
         }
     }
 
-    static void continuarJugant(boolean continuar){
+    static void continuarJugant(){
         System.out.println("Vols jugar un altre partida? [S-N]");
             String resposta = sc.nextLine();
-            switch (resposta) {
+            switch (resposta.toUpperCase()) {
                 case "S":
                     netejaPantalla();
                     break;
