@@ -68,6 +68,10 @@ public class penjat {
                 mostrarTaulell(taulellPartida);
                 
                 int resposta = comprovarLletra(input, paraulaSeparada, paraula);
+                
+                mostrarParaula(paraulaSeparada);
+                System.out.print("\n\nLletres: " + lletres);    //printo la llista
+
                 if (resposta == 0){
                     //System.out.println("S'ha trobat la lletra " + input.charAt(0));
                     if (contador == paraula.length()){
@@ -182,8 +186,6 @@ public class penjat {
                     break;
             }
         }
-        mostrarParaula(paraulaSeparada);
-        System.out.print("\n\nLletres: " + lletres);    //printo la llista
 
         if (!repetida){
             boolean trobada = false;
